@@ -1,0 +1,21 @@
+{
+  "name": "polyseal-protocol",
+  "version": "1.0.0",
+  "description": "Protocol layer for Polyseal",
+  "scripts": {
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/registerSchemas.ts --network amoy"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.2",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@ethereum-attestation-service/eas-sdk": "^2.1.0",
+    "ethers": "^6.11.1"
+  }
+}

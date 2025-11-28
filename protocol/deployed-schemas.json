@@ -1,0 +1,41 @@
+{
+  "network": "polygon-amoy",
+  "schemaRegistry": "0x23c5701A1BDa89C61d181BD79E5203c730708AE7",
+  "schemas": {
+    "PRIVATE_CREDENTIAL_SCHEMA": {
+      "name": "Polyseal Private Credential",
+      "schema": "string category,bytes32 merkleRoot,uint64 issuedAt,uint64 expiresAt,string description",
+      "uid": "0x95f3bb51240d66ae81e278ef7bb850cf1f1c2691ba49d87be9b32311208172e2"
+    },
+    "PAYMENT_RECEIPT_SCHEMA": {
+      "name": "Polyseal Payment Receipt",
+      "schema": "address payer,address payee,uint256 amount,address token,string paymentType,bytes32 txHash,uint64 paidAt,string memo",
+      "uid": "0x3d1b107c6dbecb1095e2299e527c9d5e4856793c56acfdbcb6b13cfb97998ed9"
+    },
+    "REMITTANCE_PROOF_SCHEMA": {
+      "name": "Polyseal Remittance Proof",
+      "schema": "address sender,address beneficiary,uint256 amount,address token,string corridorCode,bytes32 txHash,uint64 sentAt",
+      "uid": "0x928eb7f0c811872346b0ff487c21d6eab96ced6bcd2ad52e9a65f163732e8d9c"
+    },
+    "PAYROLL_PROOF_SCHEMA": {
+      "name": "Polyseal Payroll Proof",
+      "schema": "address employer,address employee,uint256 grossAmount,uint256 netAmount,address token,string period,bytes32 txHash,uint64 paidAt",
+      "uid": "0x5a270e52246f7b53ef60be90840dbfa6d78fa05ba4596cb7a1fe1534205851ea"
+    },
+    "LOAN_REPAID_SCHEMA": {
+      "name": "Polyseal Loan Repaid",
+      "schema": "address borrower,address lender,uint256 principal,uint256 interest,address token,bytes32 loanId,bytes32 txHash,uint64 repaidAt",
+      "uid": "0xa40862e860f036d49a9515be2f41d8428365bc70a240208a49508198e169e112"
+    },
+    "LIQUIDITY_PROVIDER_SCHEMA": {
+      "name": "Polyseal Liquidity Provider",
+      "schema": "address provider,address pool,uint256 amount,address token,string action,bytes32 positionId,uint64 timestamp",
+      "uid": "0x42fd18814f3fd38dbfb1928729c03639676b369d29ccae2364f790e19b6586b4"
+    },
+    "DEFI_SCORE_SCHEMA": {
+      "name": "Polyseal DeFi Score",
+      "schema": "address subject,uint256 score,uint64 calculatedAt,uint256 totalLoans,uint256 totalVolume,uint256 liquidations,string methodologyVersion",
+      "uid": "0xcb5e3a505f31b0ce1c7fd4ec250047747ee6a5a8358f83653bf0ab69ff9cf396"
+    }
+  }
+}

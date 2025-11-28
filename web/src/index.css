@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* POLYSEAL Dark Theme - Deep purple to slate gradient */
+    --background: 263 70% 8%;
+    --background-secondary: 222 47% 11%;
+    --foreground: 0 0% 98%;
+
+    --card: 263 45% 12%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 263 50% 10%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 188 95% 43%; /* Cyan */
+    --primary-foreground: 263 70% 8%;
+
+    --secondary: 158 64% 52%; /* Emerald */
+    --secondary-foreground: 263 70% 8%;
+
+    --muted: 263 35% 18%;
+    --muted-foreground: 220 9% 65%;
+
+    --accent: 188 95% 43%;
+    --accent-foreground: 263 70% 8%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 263 25% 20%;
+    --input: 263 30% 15%;
+    --ring: 188 95% 43%;
+
+    --radius: 1rem;
+
+    /* Glassmorphism effects */
+    --glass-bg: 263 45% 12% / 0.7;
+    --glass-border: 263 25% 30% / 0.3;
+    
+    /* Gradient stops */
+    --gradient-start: 263 70% 8%;
+    --gradient-end: 222 47% 11%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-gradient-to-br from-background to-background-secondary text-foreground min-h-screen;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .glass-card {
+    @apply bg-card/70 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl;
+  }
+
+  .glass-nav {
+    @apply bg-card/60 backdrop-blur-2xl border-b border-border/30;
+  }
+
+  .text-gradient-primary {
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
+  }
+
+  .btn-glow {
+    @apply shadow-[0_0_30px_rgba(6,182,212,0.5)] hover:shadow-[0_0_40px_rgba(6,182,212,0.7)];
+  }
+}
