@@ -8,6 +8,7 @@ import { useWalletContext } from "../context/WalletContext";
 import { toast } from "react-hot-toast";
 import { formatDistanceToNow } from "date-fns";
 import { SCHEMAS } from "../constants/schemas";
+import { ethers } from "ethers";
 
 export default function Payments() {
   const [selectedPayment, setSelectedPayment] = useState<any | null>(null);
@@ -27,6 +28,11 @@ export default function Payments() {
     txHash: "0x0000000000000000000000000000000000000000000000000000000000000000"
   });
 
+  const getTokenDecimals = (token: string) => {
+    if (token === "USDC") return 6;
+    return 18; // POL, DAI, USDT (on Amoy)
+  };
+
   const handleCreate = async () => {
     try {
       if (!formData.recipient || !formData.amount) {
@@ -36,11 +42,14 @@ export default function Payments() {
       // Mock token address for Amoy USDC
       const tokenAddress = "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582";
 
+      const decimals = getTokenDecimals(formData.token);
+      const amountBigInt = ethers.parseUnits(formData.amount, decimals);
+
       if (formData.paymentType === "Remittance") {
         await createRemittanceProof(formData.recipient, {
           sender: address!,
           beneficiary: formData.recipient,
-          amount: BigInt(formData.amount),
+          amount: amountBigInt,
           token: tokenAddress,
           corridorCode: "US-MX", // Placeholder
           txHash: formData.txHash,
@@ -50,8 +59,8 @@ export default function Payments() {
         await createPayrollProof(formData.recipient, {
           employer: address!,
           employee: formData.recipient,
-          grossAmount: BigInt(formData.amount),
-          netAmount: BigInt(formData.amount), // Simplified
+          grossAmount: amountBigInt,
+          netAmount: amountBigInt, // Simplified
           token: tokenAddress,
           period: "2024-M11", // Placeholder
           txHash: formData.txHash,
@@ -62,7 +71,7 @@ export default function Payments() {
         await createPaymentReceipt(formData.recipient, {
           payer: address!,
           payee: formData.recipient,
-          amount: BigInt(formData.amount),
+          amount: amountBigInt,
           token: tokenAddress,
           paymentType: formData.paymentType,
           txHash: formData.txHash,
