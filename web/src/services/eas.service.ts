@@ -37,24 +37,29 @@ export class EASService {
     }) {
         if (!this.signer) throw new Error("EAS Service not initialized");
 
-        const { schemaUID, recipient, data, refUID, expirationTime = 0 } = options;
+        const { schemaUID, recipient, data, expirationTime = 0 } = options;
+        // Use ZeroHash (0x000...000) when refUID is not provided
+        const refUID = options.refUID || ethers.ZeroHash;
 
-        const tx = await this.eas.attest({
-            schema: schemaUID,
-            data: {
-                recipient,
-                expirationTime: BigInt(expirationTime),
-                revocable: true,
-                refUID,
-                data,
-            },
-        });
+        try {
+            const tx = await this.eas.attest({
+                schema: schemaUID,
+                data: {
+                    recipient,
+                    expirationTime: BigInt(expirationTime),
+                    revocable: true,
+                    refUID,
+                    data,
+                },
+            });
 
-        const newAttestationUID = await tx.wait();
-        // EAS SDK v2 Transaction object usually has 'tx' property which is the ContractTransactionResponse
-        // But to be safe we check multiple paths
-        const txHash = (tx as any).tx?.hash || (tx as any).hash || "";
-        return { uid: newAttestationUID, txHash };
+            const newAttestationUID = await tx.wait();
+            const txHash = (tx as any).tx?.hash || (tx as any).hash || "";
+            return { uid: newAttestationUID, txHash };
+        } catch (error: any) {
+            console.error("EAS Attestation Error:", error);
+            throw new Error(error.message || "Failed to create attestation");
+        }
     }
 
     async getAttestation(uid: string) {
