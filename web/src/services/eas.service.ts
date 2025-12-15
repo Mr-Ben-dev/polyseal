@@ -20,7 +20,9 @@ export class EASService {
         try {
             this.provider = new BrowserProvider(window.ethereum);
             this.signer = await this.provider.getSigner();
-            this.eas.connect(this.signer);
+            // IMPORTANT: connect() returns a NEW connected instance, we must reassign
+            this.eas = this.eas.connect(this.signer) as EAS;
+            console.log("EAS Service initialized with contract:", EAS_CONTRACT_ADDRESS);
             return true;
         } catch (error) {
             console.error("Failed to init EAS service:", error);
