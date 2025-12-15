@@ -67,8 +67,8 @@ Unified reputation combining Polygon and Katana activity into one identity profi
 
 | Name | Address / UID |
 |------|---------------|
-| **EAS Contract** | `0xC2679fBD37d54388Ce493F1DB75320D236e1815e` |
-| **Schema Registry** | `0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0` |
+| **EAS Contract** | `0xd624943e0dd7fcd204026f5e8e4d29773998c1aa` |
+| **Schema Registry** | `0x7876EEF51A891E737AF8ba5A5E0f0Fd29073D5a7` |
 | **Private Credential** | `0x95f3bb51240d66ae81e278ef7bb850cf1f1c2691ba49d87be9b32311208172e2` |
 | **Payment Receipt** | `0x3d1b107c6dbecb1095e2299e527c9d5e4856793c56acfdbcb6b13cfb97998ed9` |
 | **Remittance Proof** | `0x928eb7f0c811872346b0ff487c21d6eab96ced6bcd2ad52e9a65f163732e8d9c` |
@@ -98,8 +98,8 @@ npm install
 ### 3. Environment Variables (Mainnet)
 Create a `.env` file in the `web` directory:
 ```env
-VITE_EAS_CONTRACT_ADDRESS=0xC2679fBD37d54388Ce493F1DB75320D236e1815e
-VITE_SCHEMA_REGISTRY_ADDRESS=0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0
+VITE_EAS_CONTRACT_ADDRESS=0xd624943e0dd7fcd204026f5e8e4d29773998c1aa
+VITE_SCHEMA_REGISTRY_ADDRESS=0x7876EEF51A891E737AF8ba5A5E0f0Fd29073D5a7
 VITE_POLYGON_RPC_URL=https://polygon-rpc.com
 VITE_EAS_GRAPHQL_URL=https://polygon.easscan.org/graphql
 VITE_CHAIN_ID=137

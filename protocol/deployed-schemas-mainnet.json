@@ -1,9 +1,9 @@
 {
   "network": "polygon-mainnet",
   "chainId": 137,
-  "schemaRegistry": "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0",
-  "easContract": "0xC2679fBD37d54388Ce493F1DB75320D236e1815e",
-  "deployedAt": "2025-12-15T22:29:10.891Z",
+  "schemaRegistry": "0x7876EEF51A891E737AF8ba5A5E0f0Fd29073D5a7",
+  "easContract": "0xd624943e0dd7fcd204026f5e8e4d29773998c1aa",
+  "deployedAt": "2025-12-15T22:55:32.803Z",
   "schemas": {
     "PRIVATE_CREDENTIAL_SCHEMA": {
       "name": "Polyseal Private Credential",

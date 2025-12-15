@@ -37,8 +37,9 @@ const SCHEMAS = {
     },
 };
 
-// Polygon Mainnet EAS addresses
-const MAINNET_SCHEMA_REGISTRY = "0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0";
+// Polygon Mainnet EAS addresses (CORRECT - different from Ethereum Mainnet!)
+const MAINNET_SCHEMA_REGISTRY = "0x7876EEF51A891E737AF8ba5A5E0f0Fd29073D5a7";
+const MAINNET_EAS_CONTRACT = "0xd624943e0dd7fcd204026f5e8e4d29773998c1aa";
 const MAINNET_RPC = "https://polygon-rpc.com";
 
 async function main() {
@@ -63,7 +64,7 @@ async function main() {
         network: "polygon-mainnet",
         chainId: 137,
         schemaRegistry: MAINNET_SCHEMA_REGISTRY,
-        easContract: "0xC2679fBD37d54388Ce493F1DB75320D236e1815e",
+        easContract: MAINNET_EAS_CONTRACT,
         deployedAt: new Date().toISOString(),
         schemas: {},
     };
