@@ -44,77 +44,100 @@ export class EASService {
 
         console.log("Creating attestation with schema:", schemaUID);
         console.log("Recipient:", recipient);
+        console.log("Data length:", data.length);
 
-        // Call attest and get the transaction object
-        const tx = await this.eas.attest({
-            schema: schemaUID,
-            data: {
-                recipient,
-                expirationTime: BigInt(expirationTime),
-                revocable: true,
-                refUID,
-                data,
-            },
-        });
+        try {
+            // Call attest and get the transaction object
+            console.log("Calling eas.attest()...");
+            const tx = await this.eas.attest({
+                schema: schemaUID,
+                data: {
+                    recipient,
+                    expirationTime: BigInt(expirationTime),
+                    revocable: true,
+                    refUID,
+                    data,
+                },
+            });
 
-        // Immediately extract the transaction hash from the tx object
-        // The EAS SDK returns a Transaction object with `.tx` property
-        const txResponse = (tx as any).tx;
-        const txHash = txResponse?.hash || "";
+            console.log("eas.attest() returned");
+            console.log("tx object type:", typeof tx);
+            console.log("tx object keys:", Object.keys(tx));
 
-        console.log("Transaction hash:", txHash);
-        console.log("Transaction submitted, waiting for receipt...");
+            // Try multiple ways to get the transaction hash
+            let txHash = "";
 
-        if (!txHash) {
-            throw new Error("Failed to get transaction hash");
-        }
+            // Method 1: tx.tx.hash (common EAS SDK structure)
+            if ((tx as any).tx?.hash) {
+                txHash = (tx as any).tx.hash;
+                console.log("Got hash from tx.tx.hash:", txHash);
+            }
+            // Method 2: tx.hash directly
+            else if ((tx as any).hash) {
+                txHash = (tx as any).hash;
+                console.log("Got hash from tx.hash:", txHash);
+            }
+            // Method 3: tx.transactionHash
+            else if ((tx as any).transactionHash) {
+                txHash = (tx as any).transactionHash;
+                console.log("Got hash from tx.transactionHash:", txHash);
+            }
+            // Method 4: Try wait() - this is the normal path
+            else {
+                console.log("No hash found directly, trying tx.wait()...");
+                const uid = await tx.wait();
+                console.log("wait() returned UID:", uid);
+                return { uid, txHash: "" };
+            }
 
-        // Wait for the transaction receipt manually (skip SDK's wait which has issues)
-        const receipt = await this.provider.waitForTransaction(txHash, 1, 120000);
+            console.log("Transaction hash:", txHash);
+            console.log("Transaction submitted, waiting for receipt...");
 
-        if (!receipt || receipt.status !== 1) {
-            throw new Error("Transaction failed or timed out");
-        }
+            if (!txHash) {
+                throw new Error("Failed to get transaction hash");
+            }
 
-        console.log("Transaction confirmed in block:", receipt.blockNumber);
+            // Wait for the transaction receipt manually
+            const receipt = await this.provider.waitForTransaction(txHash, 1, 120000);
 
-        // Parse the attestation UID from the transaction logs
-        // The Attested event has topic0 = keccak256("Attested(address,address,bytes32,bytes32)")
-        // The UID is typically in the 3rd topic or data field
-        let attestationUID = txHash; // Default to txHash if we can't parse
+            if (!receipt || receipt.status !== 1) {
+                throw new Error("Transaction failed or timed out");
+            }
 
-        // Try to find the Attested event in logs
-        const attestedEventTopic = "0x8bf46bf4cfd674fa735a3d63ec1c9ad4153f033c290341f3a588b75685141b35";
-        const attestedLog = receipt.logs.find(log => log.topics[0] === attestedEventTopic);
+            console.log("Transaction confirmed in block:", receipt.blockNumber);
 
-        if (attestedLog && attestedLog.topics.length >= 3) {
-            // The UID is typically the 3rd topic (index 2) or 4th topic (index 3)
-            attestationUID = attestedLog.topics[3] || attestedLog.topics[2] || txHash;
-            console.log("Parsed UID from logs:", attestationUID);
-        } else if (receipt.logs.length > 0) {
-            // Try to find UID in any log's data or topics
-            for (const log of receipt.logs) {
-                if (log.topics.length >= 3) {
-                    // Common pattern: UID in topics[2] or topics[3]
-                    attestationUID = log.topics[2] || log.topics[3] || txHash;
-                    console.log("Found UID from log:", attestationUID);
-                    break;
+            // Parse the attestation UID from the transaction logs
+            let attestationUID = txHash;
+
+            // Try to find the Attested event in logs
+            const attestedEventTopic = "0x8bf46bf4cfd674fa735a3d63ec1c9ad4153f033c290341f3a588b75685141b35";
+            const attestedLog = receipt.logs.find(log => log.topics[0] === attestedEventTopic);
+
+            if (attestedLog && attestedLog.topics.length >= 3) {
+                attestationUID = attestedLog.topics[3] || attestedLog.topics[2] || txHash;
+                console.log("Parsed UID from logs:", attestationUID);
+            } else if (receipt.logs.length > 0) {
+                for (const log of receipt.logs) {
+                    if (log.topics.length >= 3) {
+                        attestationUID = log.topics[2] || log.topics[3] || txHash;
+                        console.log("Found UID from log:", attestationUID);
+                        break;
+                    }
                 }
             }
+
+            console.log("Attestation created successfully!");
+            console.log("UID:", attestationUID);
+            console.log("TX Hash:", txHash);
+
+            return { uid: attestationUID, txHash };
+        } catch (error: any) {
+            console.error("EAS Attestation Error:", error);
+            throw new Error(error.message || "Failed to create attestation");
         }
-
-        console.log("Attestation created successfully!");
-        console.log("UID:", attestationUID);
-        console.log("TX Hash:", txHash);
-
-        return { uid: attestationUID, txHash };
     }
 
     async getAttestation(uid: string) {
-        // If not initialized, try to connect to a read-only provider if possible, 
-        // but for now we rely on init() being called or just failing.
-        // However, EAS SDK needs a provider to read.
-        // If this.eas.contract.runner is null, it will fail.
         return await this.eas.getAttestation(uid);
     }
 
