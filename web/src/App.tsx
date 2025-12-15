@@ -11,6 +11,7 @@ import Verify from "./pages/Verify";
 import Credentials from "./pages/Credentials";
 import Payments from "./pages/Payments";
 import DefiScore from "./pages/DefiScore";
+import Analytics from "./pages/Analytics";
 import NotFound from "./pages/NotFound";
 
 import { Toaster as HotToast } from "react-hot-toast";
@@ -35,6 +36,7 @@ const App = () => (
         <Route path="/credentials" element={<Layout><Credentials /></Layout>} />
         <Route path="/payments" element={<Layout><Payments /></Layout>} />
         <Route path="/defi-score" element={<Layout><DefiScore /></Layout>} />
+        <Route path="/analytics" element={<Layout><Analytics /></Layout>} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" element={<Layout><NotFound /></Layout>} />
       </Routes>

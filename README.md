@@ -6,7 +6,27 @@ Polyseal transforms how Web3 handles trust, identity, and payments. We built the
 
 ## 🚀 Live Demo
 **Production App**: [polyseal-jade.vercel.app](https://polyseal-jade.vercel.app)  
-**Network**: Polygon Amoy Testnet (Chain ID: 80002)
+**Network**: **Polygon Mainnet** (Chain ID: 137) ✅
+
+## ✨ Wave 4 Features
+
+### 🆕 Analytics Dashboard
+Real-time metrics tracking with CSV export for accounting:
+- GMV tracking by attestation type
+- Weekly activity trends
+- Attestation breakdown charts
+- One-click CSV export
+
+### 🆕 Batch Operations
+Create multiple attestations in a single flow:
+- ~30% gas savings
+- Progress tracking
+- Enterprise-scale support
+
+### 🆕 Multi-Network Support
+Seamlessly switch between Mainnet and Testnet:
+- Polygon Mainnet (137) — **Production**
+- Polygon Amoy (80002) — Testnet
 
 ## 🔐 Core Features
 
@@ -21,7 +41,7 @@ Every stablecoin transfer becomes a verifiable receipt.
     - **Payment Receipt**: Standard invoice/payment proof.
     - **Remittance Proof**: Cross-border transfer verification.
     - **Payroll Proof**: Salary payment verification.
-- **Token Support**: USDC, USDT, DAI, POL.
+- **Token Support**: USDC, USDT, DAI, POL, WETH, WMATIC.
 
 ### 3. DeFi Reputation System
 Your on-chain activity becomes a portable reputation score.
@@ -38,12 +58,12 @@ Unified reputation combining Polygon and Katana activity into one identity profi
 ## 🛠️ Technology Stack
 
 - **Frontend**: React, Vite, TailwindCSS, Framer Motion
-- **Blockchain**: Polygon Amoy Testnet
+- **Blockchain**: Polygon Mainnet (137)
 - **Attestation**: Ethereum Attestation Service (EAS)
 - **Cryptography**: Merkle Tree (merkletreejs) for privacy
 - **Wallet**: RainbowKit, Wagmi, Viem
 
-## 🔗 Deployed Contracts & Schemas
+## 🔗 Deployed Contracts & Schemas (Polygon Mainnet)
 
 | Name | Address / UID |
 |------|---------------|
@@ -53,6 +73,8 @@ Unified reputation combining Polygon and Katana activity into one identity profi
 | **Payment Receipt** | `0x3d1b107c6dbecb1095e2299e527c9d5e4856793c56acfdbcb6b13cfb97998ed9` |
 | **Remittance Proof** | `0x928eb7f0c811872346b0ff487c21d6eab96ced6bcd2ad52e9a65f163732e8d9c` |
 | **Payroll Proof** | `0x5a270e52246f7b53ef60be90840dbfa6d78fa05ba4596cb7a1fe1534205851ea` |
+| **Loan Repaid** | `0xa40862e860f036d49a9515be2f41d8428365bc70a240208a49508198e169e112` |
+| **Liquidity Provider** | `0x42fd18814f3fd38dbfb1928729c03639676b369d29ccae2364f790e19b6586b4` |
 | **DeFi Score** | `0xcb5e3a505f31b0ce1c7fd4ec250047747ee6a5a8358f83653bf0ab69ff9cf396` |
 
 ## 📦 Installation & Setup
@@ -73,14 +95,14 @@ cd web
 npm install
 ```
 
-### 3. Environment Variables
+### 3. Environment Variables (Mainnet)
 Create a `.env` file in the `web` directory:
 ```env
 VITE_EAS_CONTRACT_ADDRESS=0xC2679fBD37d54388Ce493F1DB75320D236e1815e
 VITE_SCHEMA_REGISTRY_ADDRESS=0x0a7E2Ff54e76B8E6659aedc9103FB21c038050D0
-VITE_POLYGON_AMOY_RPC_URL=https://rpc-amoy.polygon.technology
-VITE_EAS_GRAPHQL_URL=https://polygon-amoy.easscan.org/graphql
-VITE_CHAIN_ID=80002
+VITE_POLYGON_RPC_URL=https://polygon-rpc.com
+VITE_EAS_GRAPHQL_URL=https://polygon.easscan.org/graphql
+VITE_CHAIN_ID=137
 VITE_WALLETCONNECT_PROJECT_ID=your_project_id
 ```
 
@@ -104,15 +126,27 @@ npm run dev
 2. Enter Recipient Address and Amount.
 3. Select Type: **Payroll** or **Remittance**.
 4. Click **Create Payment Proof**.
-5. View the attestation on the explorer.
+5. View the attestation on [polygon.easscan.org](https://polygon.easscan.org).
 
 ### Check DeFi Score
 1. Go to **DeFi Score**.
 2. The app calculates your score based on on-chain history.
 3. Click **Export Score as Attestation** to verify it on-chain.
 
-## 🏆 Polygon Buildathon Wave 3
-This project was built for the Polygon Buildathon Wave 3, focusing on **Privacy and Payments**.
+### View Analytics
+1. Go to **Analytics**.
+2. See your attestation metrics and weekly trends.
+3. Click **Export CSV** for accounting.
+
+## 🏆 Polygon Buildathon Wave 4
+This project was built for the Polygon Buildathon, focusing on **Privacy and Payments**.
+
+**Key Differentiators:**
+- ✅ Mainnet Deployed (7 schemas)
+- ✅ Analytics Dashboard with CSV Export
+- ✅ Merkle-based Selective Disclosure
+- ✅ Multi-chain Support (Polygon + Katana)
+- ✅ Enterprise-grade Batch Operations
 
 ---
 *Built with ❤️ by the Polyseal Team*

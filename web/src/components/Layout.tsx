@@ -16,6 +16,7 @@ const navLinks = [
   { to: "/credentials", label: "Credentials" },
   { to: "/payments", label: "Payments" },
   { to: "/defi-score", label: "DeFi Score" },
+  { to: "/analytics", label: "Analytics" },
 ];
 
 export default function Layout({ children }: LayoutProps) {
@@ -42,8 +43,8 @@ export default function Layout({ children }: LayoutProps) {
                   key={link.to}
                   to={link.to}
                   className={`text-sm font-medium transition-colors hover:text-primary ${location.pathname === link.to
-                      ? "text-primary"
-                      : "text-muted-foreground"
+                    ? "text-primary"
+                    : "text-muted-foreground"
                     }`}
                 >
                   {link.label}
@@ -81,8 +82,8 @@ export default function Layout({ children }: LayoutProps) {
                       to={link.to}
                       onClick={() => setMobileMenuOpen(false)}
                       className={`text-base font-medium transition-colors hover:text-primary ${location.pathname === link.to
-                          ? "text-primary"
-                          : "text-muted-foreground"
+                        ? "text-primary"
+                        : "text-muted-foreground"
                         }`}
                     >
                       {link.label}
