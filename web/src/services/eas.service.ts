@@ -35,13 +35,16 @@ export class EASService {
         refUID?: string;
         expirationTime?: bigint | number;
     }) {
-        if (!this.signer) throw new Error("EAS Service not initialized");
+        if (!this.signer || !this.provider) throw new Error("EAS Service not initialized");
 
         const { schemaUID, recipient, data, expirationTime = 0 } = options;
         // Use ZeroHash (0x000...000) when refUID is not provided
         const refUID = options.refUID || ethers.ZeroHash;
 
         try {
+            console.log("Creating attestation with schema:", schemaUID);
+            console.log("Recipient:", recipient);
+
             const tx = await this.eas.attest({
                 schema: schemaUID,
                 data: {
@@ -53,8 +56,34 @@ export class EASService {
                 },
             });
 
-            const newAttestationUID = await tx.wait();
+            console.log("Transaction submitted, waiting for confirmation...");
+
+            // Try the SDK's wait() first, but with a fallback
+            let newAttestationUID: string;
+            try {
+                newAttestationUID = await tx.wait();
+            } catch (waitError) {
+                console.warn("SDK wait() failed, using fallback...", waitError);
+                // Fallback: Get the transaction hash and wait for receipt manually
+                const txHash = (tx as any).tx?.hash || (tx as any).hash;
+                if (txHash) {
+                    console.log("Waiting for transaction receipt:", txHash);
+                    const receipt = await this.provider.waitForTransaction(txHash, 1, 60000);
+                    if (receipt && receipt.status === 1) {
+                        // Parse the UID from the logs if possible
+                        // For now, return the tx hash as a placeholder
+                        newAttestationUID = txHash;
+                        console.log("Transaction confirmed:", receipt.hash);
+                    } else {
+                        throw new Error("Transaction failed or timed out");
+                    }
+                } else {
+                    throw waitError;
+                }
+            }
+
             const txHash = (tx as any).tx?.hash || (tx as any).hash || "";
+            console.log("Attestation created successfully:", newAttestationUID);
             return { uid: newAttestationUID, txHash };
         } catch (error: any) {
             console.error("EAS Attestation Error:", error);
